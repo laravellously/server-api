@@ -21,7 +21,7 @@ const config = {
 	database: new Pool({
     connectionString: env.AUTH_DATABASE_URL
   }),
-	trustedOrigins: ["http://localhost:3000"],
+	trustedOrigins: env.TRUSTED_ORIGINS?.split(','),
 	secret: env.AUTH_SECRET,
 	baseURL: env.APP_URL,
 	basePath: env.AUTH_PATH || "/auth",
