@@ -72,12 +72,14 @@ const config: Options = {
   loggerFactory: (options) => new ORMLogger(options),
   // logger: msg => dbLogger.log(msg),
 
+  metadataCache: { enabled: process.env.NODE_ENV !== 'production' },
+
   highlighter: new SqlHighlighter(),
 
   // Pool settings
   pool: {
-    min: 2,
-    max: 10,
+    min: 1,
+    max: 3,
   },
 
   // Timezone and encoding
