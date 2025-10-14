@@ -1,1 +1,0 @@
-export declare const ConfigurableModuleClass: import("@nestjs/common").ConfigurableModuleCls<import("passport-zitadel").ZitadelIntrospectionOptions, "forRoot", "create", {}>, MODULE_OPTIONS_TOKEN: string | symbol;

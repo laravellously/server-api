@@ -11,15 +11,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
-
-  app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   // app.enableVersioning({
   //   type: VersioningType.URI,
   //   defaultVersion: '1'
   // });
   app.enableCors({
-    origin: "http://localhost:3000",
+    origin: true,
     credentials: true,
     methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
     allowedHeaders: [
@@ -27,6 +24,9 @@ async function bootstrap() {
       'Authorization'
     ]
   });
+  
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.enableShutdownHooks();
 
   // const config: ConfigService = app.get(ConfigService);
@@ -37,8 +37,6 @@ async function bootstrap() {
   //   'OPENAPI_CLIENT_SECRET',
   // );
   // const authority: string = config.getOrThrow<string>('IDP_AUTHORITY');
-
-  let redirectUri: string;
 
   const documentBuilder = new DocumentBuilder()
     .setTitle('BluuPay API Server')

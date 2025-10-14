@@ -22,7 +22,7 @@ import { UsersModule } from './module/users/users.module';
     TerminusModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      // envFilePath: ['.env'],
       cache: true,
       validate: (config: Record<string, unknown>) => {
         // Add environment validation here

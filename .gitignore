@@ -1,7 +1,23 @@
-node_modules
-# dist
-temp
+# MikroORM metadata cache
+temp/
+!temp/metadata.json
 
+# Distribution files
+dist/
+
+# Node modules
+node_modules/
+
+# Environment variables
 .env
+.env.local
+.env.*.local
 .env.production
-.env.production
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
