@@ -11,6 +11,13 @@ class ORMLogger extends DefaultLogger {
 
 export default defineConfig({
   clientUrl: process.env.DATABASE_URL,
+  driverOptions: {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      }
+    }
+  },
   entities: ['./dist/src/db/entities'],
   entitiesTs: ['./src/db/entities'],
   loggerFactory: (options) => new ORMLogger(options),
