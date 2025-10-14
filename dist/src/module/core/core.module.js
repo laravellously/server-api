@@ -7,8 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoreModule = void 0;
-const palmpay_1 = require("@/core/client/palmpay");
-const pouchii_1 = require("@/core/client/pouchii");
+const palmpay_1 = require("../../core/client/palmpay");
+const pouchii_1 = require("../../core/client/pouchii");
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 let CoreModule = class CoreModule {

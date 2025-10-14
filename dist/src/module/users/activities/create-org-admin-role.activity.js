@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateOrgAdminRoleActivity = void 0;
 const common_1 = require("@nestjs/common");
 const postgresql_1 = require("@mikro-orm/postgresql");
-const Users_1 = require("@/db/entities/Users");
-const UserLocations_1 = require("@/db/entities/UserLocations");
+const Users_1 = require("../../../db/entities/Users");
+const UserLocations_1 = require("../../../db/entities/UserLocations");
 const nestjs_temporal_core_1 = require("nestjs-temporal-core");
 let CreateOrgAdminRoleActivity = class CreateOrgAdminRoleActivity {
     em;

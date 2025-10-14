@@ -45,22 +45,14 @@ async function bootstrap() {
     });
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.useGlobalInterceptors(new common_1.ClassSerializerInterceptor(app.get(core_1.Reflector)));
-    app.enableVersioning({
-        type: common_1.VersioningType.URI,
-        defaultVersion: '1'
-    });
     app.enableCors({
-        origin: [
-            'http://localhost:3000',
-        ],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        origin: "http://localhost:3000",
+        credentials: true,
+        methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
         allowedHeaders: [
             'Content-Type',
-            'Authorization',
-            'X-Requested-With',
-            'Accept',
-        ],
-        credentials: true,
+            'Authorization'
+        ]
     });
     app.enableShutdownHooks();
     let redirectUri;

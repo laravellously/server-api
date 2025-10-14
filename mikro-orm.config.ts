@@ -1,21 +1,18 @@
+import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { Migrator } from '@mikro-orm/migrations';
-import { DefaultLogger, defineConfig, LogContext, LoggerNamespace, Options } from '@mikro-orm/postgresql';
+import { DefaultLogger, defineConfig, GeneratedCacheAdapter, LogContext, LoggerNamespace, Options } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SeedManager } from '@mikro-orm/seeder';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { Logger } from '@nestjs/common';
-import { EntityGenerator } from '@mikro-orm/entity-generator';
+// import metadata from './temp/metadata.json';
 
-// const dbLogger = new Logger('DB')
+const isProd = process.env.NODE_ENV === 'production';
 
 class ORMLogger extends DefaultLogger {
   private readonly logger = new Logger(ORMLogger.name);
   log(namespace: LoggerNamespace, message: string, context?: LogContext) {
-    // Create your own implementation for output:
     this.logger.log(`[${namespace}] ${message}`);
-
-    // OR Utilize DefaultLogger's implementation:
-    // super.log(namespace, message, context)
   }
 }
 
@@ -23,14 +20,16 @@ const config: Options = {
   // type: 'postgresql',
 
   // Database connection settings
-  dbName: 'bluu-erp-final',
-  host: process.env.DB_HOST || 'localhost',
-  port: +(process.env.DB_PORT || 5432),
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || '',
+  // dbName: 'bluu-erp-final',
+  // host: process.env.DB_HOST || 'localhost',
+  // port: +(process.env.DB_PORT || 5432),
+  // user: process.env.DB_USER || 'postgres',
+  // password: process.env.DB_PASSWORD || '',
+
+  clientUrl: process.env.DATABASE_URL,
 
   // Entity configuration
-  entities: ['./dist/db/entities'],
+  entities: ['./dist/src/db/entities'],
   entitiesTs: ['./src/db/entities'],
 
   preferTs: true,
@@ -46,10 +45,11 @@ const config: Options = {
   },
 
   // Discovery configuration
-  // discovery: {
-  //   warnWhenNoEntities: true,
-  //   requireEntitiesArray: true,
-  // },
+  discovery: {
+    // disableDynamicFileAccess: isProd,
+    // warnWhenNoEntities: true,
+    // requireEntitiesArray: false,
+  },
 
   // Seeding configuration
   // seeder: {
@@ -62,17 +62,23 @@ const config: Options = {
 
   // Performance and behavior settings
   metadataProvider: TsMorphMetadataProvider,
-  // cache: {
-  //   enabled: true,
-  //   options: { cacheDir: './temp' },
-  // },
+
+  // metadataPath: join(__dirname, 'temp/metadata.json'),
 
   // Debug settings
-  debug: process.env.NODE_ENV !== 'production',
+  debug: !isProd,
   loggerFactory: (options) => new ORMLogger(options),
   // logger: msg => dbLogger.log(msg),
 
-  metadataCache: { enabled: process.env.NODE_ENV !== 'production' },
+  // metadataCache: {
+  //   enabled: isProd,
+  //   combined: true,
+  //   pretty: true,
+  //   adapter: GeneratedCacheAdapter,
+  //   options: { data: require('./temp/metadata.json') },
+  // },
+
+  // metadataCache: metadataCacheConfig,
 
   highlighter: new SqlHighlighter(),
 

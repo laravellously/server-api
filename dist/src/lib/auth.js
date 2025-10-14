@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BetterAuthOpenAPI = exports.auth = void 0;
+exports.auth = void 0;
 const better_auth_1 = require("better-auth");
 const plugins_1 = require("better-auth/plugins");
+const next_js_1 = require("better-auth/next-js");
 const passkey_1 = require("better-auth/plugins/passkey");
 const bun_1 = require("bun");
 const pg_1 = require("pg");
@@ -11,7 +12,7 @@ const config = {
     database: new pg_1.Pool({
         connectionString: bun_1.env.AUTH_DATABASE_URL
     }),
-    trustedOrigins: bun_1.env.TRUSTED_ORIGINS?.split(','),
+    trustedOrigins: ["*"],
     secret: bun_1.env.AUTH_SECRET,
     baseURL: bun_1.env.APP_URL,
     basePath: bun_1.env.AUTH_PATH || "/auth",
@@ -57,18 +58,11 @@ const config = {
         },
     },
     session: {
-        cookieName: 'bp-sess',
         cookieCache: {
             enabled: true,
             maxAge: 5 * 60,
         },
-        maxAge: 60 * 60 * 24 * 7,
         updateAge: 60 * 60 * 24,
-        cookieAttributes: {
-            secure: bun_1.env.NODE_ENV === 'production',
-            httpOnly: true,
-            sameSite: 'none'
-        }
     },
     advanced: {
         database: {
@@ -77,23 +71,12 @@ const config = {
             },
         },
         cookiePrefix: bun_1.env.AUTH_COOKIE_PREFIX,
-        useSecureCookies: false,
         crossSubDomainCookies: {
             enabled: true,
-            domain: "localhost",
         },
         defaultCookieAttributes: {
             httpOnly: true,
-            secure: false,
-        },
-        cookies: {
-            session_token: {
-                name: "bluu__session_token",
-                attributes: {
-                    httpOnly: true,
-                    secure: false,
-                }
-            }
+            secure: true
         },
     },
     secondaryStorage: {
@@ -126,24 +109,8 @@ const config = {
         }),
         (0, plugins_1.admin)(),
         (0, plugins_1.openAPI)(),
+        (0, next_js_1.nextCookies)()
     ],
 };
 exports.auth = (0, better_auth_1.betterAuth)(config);
-let _schema;
-const getSchema = async () => (_schema ??= exports.auth.api.generateOpenAPISchema());
-exports.BetterAuthOpenAPI = {
-    getPaths: (prefix = "/auth") => getSchema().then(({ paths }) => {
-        const reference = Object.create(null);
-        for (const path of Object.keys(paths)) {
-            const key = prefix + path;
-            reference[key] = paths[path];
-            for (const method of Object.keys(paths[path])) {
-                const operation = reference[key][method];
-                operation.tags = ["Better Auth"];
-            }
-        }
-        return reference;
-    }),
-    components: getSchema().then(({ components }) => components),
-};
 //# sourceMappingURL=auth.js.map

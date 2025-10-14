@@ -12,8 +12,8 @@ var ProvisionBankAccountsActivity_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProvisionBankAccountsActivity = void 0;
 const common_1 = require("@nestjs/common");
-const palmpay_1 = require("@/core/client/palmpay");
-const pouchii_1 = require("@/core/client/pouchii");
+const palmpay_1 = require("../../../core/client/palmpay");
+const pouchii_1 = require("../../../core/client/pouchii");
 const nestjs_temporal_core_1 = require("nestjs-temporal-core");
 let ProvisionBankAccountsActivity = ProvisionBankAccountsActivity_1 = class ProvisionBankAccountsActivity {
     palmpayService;

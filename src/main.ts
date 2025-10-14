@@ -14,24 +14,18 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion: '1'
-  });
+  // app.enableVersioning({
+  //   type: VersioningType.URI,
+  //   defaultVersion: '1'
+  // });
   app.enableCors({
-    origin: [
-      'http://localhost:3000',  // your Next.js dev URL
-    ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    // credentials: true,
-    // methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
     allowedHeaders: [
       'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'Accept',
-    ],
-    credentials: true,
+      'Authorization'
+    ]
   });
   app.enableShutdownHooks();
 

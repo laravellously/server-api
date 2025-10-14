@@ -1,4 +1,4 @@
-import { betterAuth, type User } from "better-auth";
+import { betterAuth, BetterAuthOptions, type User } from "better-auth";
 import {
   admin,
   apiKey,
@@ -10,18 +10,19 @@ import {
   twoFactor,
   username,
 } from "better-auth/plugins";
+import { nextCookies } from "better-auth/next-js";
 import { passkey } from "better-auth/plugins/passkey";
 import { env, randomUUIDv7, redis } from "bun";
 import { Pool } from "pg";
 
 type VerificationType = "sign-in" | "email-verification" | "forget-password";
 
-const config = {
+const config: BetterAuthOptions = {
 	appName: env.APP_NAME,
 	database: new Pool({
     connectionString: env.AUTH_DATABASE_URL
   }),
-	trustedOrigins: env.TRUSTED_ORIGINS?.split(','),
+	trustedOrigins: ["*"],
 	secret: env.AUTH_SECRET,
 	baseURL: env.APP_URL,
 	basePath: env.AUTH_PATH || "/auth",
@@ -113,18 +114,18 @@ const config = {
 	},
   session: {
     // modelName: 'sessions',
-    cookieName: 'bp-sess',
+    // cookieName: 'bp-sess',
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60, // Cache duration in seconds
     },
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    // maxAge: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
-    cookieAttributes: {
-      secure: env.NODE_ENV === 'production',
-      httpOnly: true,
-      sameSite: 'none'
-    }
+    // cookieAttributes: {
+    //   secure: env.NODE_ENV === 'production',
+    //   httpOnly: true,
+    //   sameSite: 'lax'
+    // }
   },
 	advanced: {
 		database: {
@@ -133,27 +134,26 @@ const config = {
 			},
 		},
 		cookiePrefix: env.AUTH_COOKIE_PREFIX,
-    useSecureCookies: false,
+    // useSecureCookies: false,
     crossSubDomainCookies: {
       enabled: true,
-      domain: "localhost",
+      // domain: "http://localhost:3000",
     },
     defaultCookieAttributes: {
       httpOnly: true,
-      secure: false,                  // dev over HTTP
-      // sameSite: "none",               // must be "none" to allow cross-site
+      secure: true
     },
-    cookies: {
-      session_token: {
-        name: "bluu__session_token",
-        attributes: {
-          httpOnly: true,
-          secure: false,
-          // sameSite: "none",
-        }
-      }
-      // you can override for other cookies if needed
-    },
+    // cookies: {
+    //   session_token: {
+    //     name: "bluu__session_token",
+    //     attributes: {
+    //       httpOnly: true,
+    //       secure: false,
+    //       // sameSite: "none",
+    //     }
+    //   }
+    //   // you can override for other cookies if needed
+    // },
 	},
 	// Use Redis for storing sessions
 	secondaryStorage: {
@@ -252,33 +252,34 @@ const config = {
 		}),
 		admin(),
 		openAPI(),
+    nextCookies()
 	],
 };
 
 export const auth = betterAuth(config);
 
-export type AuthSession = typeof auth.$Infer.Session;
+// export type AuthSession = typeof auth.$Infer.Session;
 
-let _schema: ReturnType<typeof auth.api.generateOpenAPISchema>;
-const getSchema = async () => (_schema ??= auth.api.generateOpenAPISchema());
+// let _schema: ReturnType<typeof auth.api.generateOpenAPISchema>;
+// const getSchema = async () => (_schema ??= auth.api.generateOpenAPISchema());
 
-export const BetterAuthOpenAPI = {
-	getPaths: (prefix = "/auth") =>
-		getSchema().then(({ paths }) => {
-			const reference: typeof paths = Object.create(null);
+// export const BetterAuthOpenAPI = {
+// 	getPaths: (prefix = "/auth") =>
+// 		getSchema().then(({ paths }) => {
+// 			const reference: typeof paths = Object.create(null);
 
-			for (const path of Object.keys(paths)) {
-				const key = prefix + path;
-				reference[key] = paths[path];
+// 			for (const path of Object.keys(paths)) {
+// 				const key = prefix + path;
+// 				reference[key] = paths[path];
 
-				for (const method of Object.keys(paths[path])) {
-					const operation = (reference[key] as any)[method];
+// 				for (const method of Object.keys(paths[path])) {
+// 					const operation = (reference[key] as any)[method];
 
-					operation.tags = ["Better Auth"];
-				}
-			}
+// 					operation.tags = ["Better Auth"];
+// 				}
+// 			}
 
-			return reference;
-		}) as Promise<any>,
-	components: getSchema().then(({ components }) => components) as Promise<any>,
-} as const;
+// 			return reference;
+// 		}) as Promise<any>,
+// 	components: getSchema().then(({ components }) => components) as Promise<any>,
+// } as const;

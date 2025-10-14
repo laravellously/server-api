@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserActivity = void 0;
 const common_1 = require("@nestjs/common");
 const postgresql_1 = require("@mikro-orm/postgresql");
-const Users_1 = require("@/db/entities/Users");
+const Users_1 = require("../../../db/entities/Users");
 const nestjs_temporal_core_1 = require("nestjs-temporal-core");
 const bun_1 = require("bun");
 let CreateUserActivity = class CreateUserActivity {

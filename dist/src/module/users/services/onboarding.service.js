@@ -11,17 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var OnboardingService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnboardingService = void 0;
-const palmpay_1 = require("@/core/client/palmpay");
-const pouchii_1 = require("@/core/client/pouchii");
-const Organizations_1 = require("@/db/entities/Organizations");
-const Users_1 = require("@/db/entities/Users");
+const palmpay_1 = require("../../../core/client/palmpay");
+const pouchii_1 = require("../../../core/client/pouchii");
+const Organizations_1 = require("../../../db/entities/Organizations");
+const Users_1 = require("../../../db/entities/Users");
 const faker_1 = require("@faker-js/faker");
 const postgresql_1 = require("@mikro-orm/postgresql");
 const common_1 = require("@nestjs/common");
 const bun_1 = require("bun");
-const ChartOfAccounts_1 = require("@/db/entities/ChartOfAccounts");
-const BankAccounts_1 = require("@/db/entities/BankAccounts");
-const AccountTypes_1 = require("@/db/entities/AccountTypes");
+const ChartOfAccounts_1 = require("../../../db/entities/ChartOfAccounts");
+const BankAccounts_1 = require("../../../db/entities/BankAccounts");
+const AccountTypes_1 = require("../../../db/entities/AccountTypes");
 let OnboardingService = OnboardingService_1 = class OnboardingService {
     em;
     palmpayService;

@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const entity_generator_1 = require("@mikro-orm/entity-generator");
 const migrations_1 = require("@mikro-orm/migrations");
 const postgresql_1 = require("@mikro-orm/postgresql");
 const reflection_1 = require("@mikro-orm/reflection");
 const seeder_1 = require("@mikro-orm/seeder");
 const sql_highlighter_1 = require("@mikro-orm/sql-highlighter");
 const common_1 = require("@nestjs/common");
-const entity_generator_1 = require("@mikro-orm/entity-generator");
+const isProd = process.env.NODE_ENV === 'production';
 class ORMLogger extends postgresql_1.DefaultLogger {
     logger = new common_1.Logger(ORMLogger.name);
     log(namespace, message, context) {
@@ -19,7 +20,7 @@ const config = {
     port: +(process.env.DB_PORT || 5432),
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || '',
-    entities: ['./dist/db/entities'],
+    entities: ['./dist/src/db/entities'],
     entitiesTs: ['./src/db/entities'],
     preferTs: true,
     migrations: {
@@ -30,8 +31,9 @@ const config = {
         allOrNothing: true,
         safe: true,
     },
+    discovery: {},
     metadataProvider: reflection_1.TsMorphMetadataProvider,
-    debug: true,
+    debug: !isProd,
     loggerFactory: (options) => new ORMLogger(options),
     highlighter: new sql_highlighter_1.SqlHighlighter(),
     pool: {
