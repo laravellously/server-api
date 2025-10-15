@@ -24,8 +24,9 @@ export class AppController {
     return this.health.check([
       () => this.http.pingCheck('api', 'https://api.pouchii.net'),
       () => this.mem.checkHeap('memory', 512 * 1024 * 1024),
-      () => this.mem.checkRSS('memory::rss', 150 * 1024 * 1024),
+      // () => this.mem.checkRSS('memory::rss', 150 * 1024 * 1024),
       // () => this.disk.checkStorage('disk::uploads', { path: 'C:\\', threshold: 250 * 1024 * 1024 * 1024 }),
+      // () => this.disk.checkStorage('storage', {  path: '/', threshold: 250 * 1024 * 1024 * 1024, })
     ]);
   }
 }

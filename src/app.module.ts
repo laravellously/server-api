@@ -20,7 +20,9 @@ import { UsersModule } from './module/users/users.module';
       useFactory: () => config
     }),
     HttpModule,
-    TerminusModule,
+    TerminusModule.forRoot({
+      gracefulShutdownTimeoutMs: 1000,
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       // envFilePath: ['.env'],
