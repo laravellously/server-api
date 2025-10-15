@@ -11,30 +11,23 @@
     "gpt:mikro-orm:cache:generate": "mikro-orm cache:generate --combined",
     "gpt:mikro-orm:cache:clear": "mikro-orm cache:clear",
     "gpt:mikro-orm:debug": "mikro-orm debug",
-    
     "migration:create": "mikro-orm migration:create",
     "migration:up": "mikro-orm migration:up",
     "migration:down": "mikro-orm migration:down",
     "migration:fresh": "mikro-orm migration:fresh",
-    
     "schema:create": "mikro-orm schema:create",
     "schema:update": "mikro-orm schema:update --run",
     "schema:drop": "mikro-orm schema:drop --run",
-
     "build": "nest build",
-
     "email": "email dev --dir ./src/core/mail/templates -p 4321",
-
     "core:build": "NODE_ENV=production bun run scripts/build.ts",
     "core:dev": "NODE_ENV=development bun --watch ./src/main.ts",
     "core:debug": "NODE_ENV=development tsc-watch --onSuccess \"bun . --inspect\"",
     "core:prod": "NODE_ENV=production bun --bun dist/src/main",
-
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
-
     "mikro:cache:gen": "mikro-orm cache:generate --combined",
     "mikro-orm:cache:clear": "mikro-orm cache:clear",
     "mikro:migration:create": "mikro-orm migration:create",
@@ -42,10 +35,8 @@
     "mikro:migration:down": "mikro-orm migration:down",
     "mikro:migration:list": "mikro-orm migration:list",
     "mikro:migration:pending": "mikro-orm migration:pending",
-
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"**/*.{ts,js,json,md}\" --ignore-path .gitignore",
-
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

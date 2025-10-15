@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import {
-  DiskHealthIndicator,
+  // DiskHealthIndicator,
   HealthCheck,
   HealthCheckService,
   HttpHealthIndicator,
@@ -13,7 +13,7 @@ export class AppController {
   constructor(
     private health: HealthCheckService,
     private http: HttpHealthIndicator,
-    private disk: DiskHealthIndicator,
+    // private disk: DiskHealthIndicator,
     private mem: MemoryHealthIndicator,
   ) {}
 
@@ -25,7 +25,7 @@ export class AppController {
       () => this.http.pingCheck('api', 'https://api.pouchii.net'),
       () => this.mem.checkHeap('memory', 512 * 1024 * 1024),
       () => this.mem.checkRSS('memory::rss', 150 * 1024 * 1024),
-      () => this.disk.checkStorage('disk::uploads', { path: 'C:\\', threshold: 250 * 1024 * 1024 * 1024 }),
+      // () => this.disk.checkStorage('disk::uploads', { path: 'C:\\', threshold: 250 * 1024 * 1024 * 1024 }),
     ]);
   }
 }

@@ -1,4 +1,5 @@
 import KeyvSqlite from '@keyv/sqlite';
+import KeyvRedis from '@keyv/redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -36,10 +37,15 @@ import { UsersModule } from './module/users/users.module';
         stats: true,
         emitErrors: true,
         namespace: 'app-cache',
-        store: new KeyvSqlite({
-          uri: 'sqlite://cache.sqlite',
-          busyTimeout: 10000,
+        store: new KeyvRedis(process.env.REDIS_URL || 'redis://localhost:6379', {
+          namespace: 'app-cache',
         }),
+        // Optional: SQLite fallback (uncomment if needed)
+        
+        // store: new KeyvSqlite({
+        //   uri: 'sqlite://cache.sqlite',
+        //   busyTimeout: 10000,
+        // }),
       }),
     }),
     AuthModule.forRoot({
@@ -73,22 +79,6 @@ import { UsersModule } from './module/users/users.module';
     //     };
     //   },
     //   inject: [ConfigService],
-    // }),
-    // MikroOrmModule.forRoot({
-    //   driver: PostgreSqlDriver,
-    //   // Database connection settings
-    //   dbName: 'bluu-erp-final',
-    //   host: process.env.DB_HOST || 'localhost',
-    //   port: +(process.env.DB_PORT || 5432),
-    //   user: process.env.DB_USER || 'postgres',
-    //   password: process.env.DB_PASSWORD || '',
-    //   entities: ['./dist/db/entities'],
-    //   entitiesTs: ['./src/db/entities'],
-    //   preferTs: true,
-    //   debug: true,
-    //   metadataProvider: TsMorphMetadataProvider
-    //   // debug: process.env.NODE_ENV !== 'production',
-    //   // validateRequired: true,
     // }),
     // TemporalModule.registerAsync({
     //   imports: [ConfigModule],
